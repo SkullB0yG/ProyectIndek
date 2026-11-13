@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard · Productividad Diaria · Indek</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/stile.css') }}">
+
+</head>
+<body>
+
+  <!-- Orbes fondo -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Barra progreso formulario -->
+  <div class="progress-bar" id="progressBar"></div>
+
+  <div class="app">
+
+    <!-- ============ TOPBAR ============ -->
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-logo">📊</div>
+        <div>
+          <div class="brand-title">Productividad Diaria</div>
+          <div class="brand-sub">Indek · Panel de control</div>
+        </div>
+      </div>
+
+      <nav class="tabs" role="tablist">
+        <button class="tab active" data-view="form" role="tab">
+          <span>📝</span> Formulario
+        </button>
+        <button class="tab" data-view="dashboard" role="tab">
+          <span>📊</span> Dashboard
+        </button>
+      </nav>
+
+      <div class="topbar-actions">
+        <div class="badge"><span class="dot"></span> En vivo</div>
+        <button class="btn-icon" id="btnExport" title="Exportar CSV">⬇️</button>
+        <button class="btn-icon" id="btnResetAll" title="Borrar todos los datos">🗑️</button>
+      </div>
+    </header>
+
+    <!-- ============ VISTA FORMULARIO ============ -->
+    <main class="view active" id="view-form">
+
+      <div class="hero">
+        <h1>Registra tu <span class="grad">productividad diaria</span></h1>
+        <p>Completa el formulario. Cada respuesta se refleja automáticamente en el dashboard.</p>
+        <p class="req-note">* Campos obligatorios</p>
+      </div>
+
+      <div class="steps" id="steps">
+        <div class="step-pill active" data-step="1"><span class="num">1</span><span class="label-text">Datos</span></div>
+        <div class="step-pill" data-step="2"><span class="num">2</span><span class="label-text">Actividades</span></div>
+        <div class="step-pill" data-step="3"><span class="num">3</span><span class="label-text">Tiempo</span></div>
+        <div class="step-pill" data-step="4"><span class="num">4</span><span class="label-text">Valoración</span></div>
+      </div>
+
+      <form id="productividadForm" novalidate>
+
+        <!-- SECCIÓN 1 -->
+        <section class="section" data-section="1">
+          <div class="section-header">
+            <div class="section-icon">👤</div>
+            <div>
+              <h2>Datos generales</h2>
+              <div class="sub">Identifícate para asociar tus respuestas</div>
+            </div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="nombre">Nombre completo <span class="req">*</span></label>
+            <input type="text" id="nombre" name="nombre" data-required placeholder="Ej. María González" autocomplete="name">
+            <div class="error-msg">Por favor escribe tu nombre.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="correo">Correo corporativo <span class="req">*</span></label>
+            <input type="email" id="correo" name="correo" data-required placeholder="nombre@indek.com" autocomplete="email">
+            <div class="error-msg">Ingresa un correo válido.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="area">Área / Departamento <span class="req">*</span></label>
+            <select id="area" name="area" data-required>
+              <option value="">Selecciona una opción</option>
+              <option>Producción</option>
+              <option>Ventas</option>
+              <option>Administración</option>
+              <option>Logística</option>
+              <option>TI</option>
+              <option>Otro</option>
+            </select>
+            <div class="error-msg">Selecciona tu área.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="fecha">Fecha <span class="req">*</span></label>
+            <input type="date" id="fecha" name="fecha" data-required>
+            <div class="error-msg">Selecciona una fecha.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label">Turno <span class="req">*</span></label>
+            <div class="options-grid">
+              <label class="opt-card"><input type="radio" name="turno" value="Mañana" data-required><span class="opt-inner">🌅 Mañana</span></label>
+              <label class="opt-card"><input type="radio" name="turno" value="Tarde" data-required><span class="opt-inner">☀️ Tarde</span></label>
+              <label class="opt-card"><input type="radio" name="turno" value="Noche" data-required><span class="opt-inner">🌙 Noche</span></label>
+            </div>
+            <div class="error-msg">Selecciona un turno.</div>
+          </div>
+        </section>
+
+        <!-- SECCIÓN 2 -->
+        <section class="section" data-section="2">
+          <div class="section-header">
+            <div class="section-icon">📋</div>
+            <div>
+              <h2>Actividades del día</h2>
+              <div class="sub">Cuéntanos cómo fue tu jornada</div>
+            </div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="planificadas">Tareas planificadas hoy <span class="req">*</span></label>
+            <input type="number" id="planificadas" name="planificadas" min="0" data-required placeholder="Ej. 8" inputmode="numeric">
+            <div class="error-msg">Ingresa un número válido.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="completadas">Tareas completadas <span class="req">*</span></label>
+            <input type="number" id="completadas" name="completadas" min="0" data-required placeholder="Ej. 6" inputmode="numeric">
+            <div class="error-msg">Ingresa un número válido.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="actividades">Actividades principales realizadas <span class="req">*</span></label>
+            <div class="input-wrap">
+              <textarea id="actividades" name="actividades" data-required maxlength="500" placeholder="Describe brevemente las tareas más relevantes..."></textarea>
+              <span class="char-count" data-for="actividades">0 / 500</span>
+            </div>
+            <div class="error-msg">Este campo es obligatorio.</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="pendientes">Tareas pendientes y motivo</label>
+            <div class="input-wrap">
+              <textarea id="pendientes" name="pendientes" maxlength="400" placeholder="Opcional"></textarea>
+              <span class="char-count" data-for="pendientes">0 / 400</span>
+            </div>
+          </div>
+
+          <div class="question">
+            <label class="q-label">Nivel de cumplimiento de objetivos <span class="req">*</span></label>
+            <div class="scale">
+              <label class="opt-card"><input type="radio" name="cumplimiento" value="1" data-required><span class="opt-inner">1</span></label>
+              <label class="opt-card"><input type="radio" name="cumplimiento" value="2" data-required><span class="opt-inner">2</span></label>
+              <label class="opt-card"><input type="radio" name="cumplimiento" value="3" data-required><span class="opt-inner">3</span></label>
+              <label class="opt-card"><input type="radio" name="cumplimiento" value="4" data-required><span class="opt-inner">4</span></label>
+              <label class="opt-card"><input type="radio" name="cumplimiento" value="5" data-required><span class="opt-inner">5</span></label>
+            </div>
+            <div class="scale-hint"><span>Muy bajo</span><span>Muy alto</span></div>
+            <div class="error-msg">Selecciona un valor.</div>
+          </div>
+        </section>
+
+        <!-- SECCIÓN 3 -->
+        <section class="section" data-section="3">
+          <div class="section-header">
+            <div class="section-icon">⏱️</div>
+            <div>
+              <h2>Tiempo y eficiencia</h2>
+              <div class="sub">Mide tu jornada real</div>
+            </div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="horas">Horas efectivas de trabajo <span class="req">*</span></label>
+            <input type="number" id="horas" name="horas" min="0" max="24" step="0.5" data-required placeholder="Ej. 7.5" inputmode="decimal">
+            <div class="error-msg">Ingresa un número válido (0–24).</div>
+          </div>
+
+          <div class="question">
+            <label class="q-label">Factores que afectaron tu productividad</label>
+            <div class="options-grid">
+              <label class="opt-card"><input type="checkbox" name="factores" value="Interrupciones"><span class="opt-inner">🔔 Interrupciones</span></label>
+              <label class="opt-card"><input type="checkbox" name="factores" value="Falta de insumos"><span class="opt-inner">📦 Falta de insumos</span></label>
+              <label class="opt-card"><input type="checkbox" name="factores" value="Reuniones"><span class="opt-inner">👥 Reuniones</span></label>
+              <label class="opt-card"><input type="checkbox" name="factores" value="Problemas técnicos"><span class="opt-inner">💻 Problemas técnicos</span></label>
+              <label class="opt-card"><input type="checkbox" name="factores" value="Carga excesiva"><span class="opt-inner">⚡ Carga excesiva</span></label>
+              <label class="opt-card"><input type="checkbox" name="factores" value="Ninguno"><span class="opt-inner">✅ Ninguno</span></label>
+            </div>
+          </div>
+
+          <div class="question">
+            <label class="q-label" for="recursos">Herramientas o recursos faltantes</label>
+            <div class="input-wrap">
+              <textarea id="recursos" name="recursos" maxlength="300" placeholder="Opcional"></textarea>
+              <span class="char-count" data-for="recursos">0 / 300</span>
+            </div>
+          </div>
+        </section>
+
+        <div class="actions">
+          <button type="button" class="btn-ghost" id="btnClear">Limpiar</button>
+          <button type="submit" class="btn-primary">
+            Enviar respuestas <span class="arrow">→</span>
+          </button>
+        </div>
+      </form>
+    </main>
+
+    <!-- ============ VISTA DASHBOARD ============ -->
+    <main class="view" id="view-dashboard">
+
+      <div class="hero">
+        <h1>Dashboard de <span class="grad">productividad</span></h1>
+        <p>Visualiza el desempeño del equipo en tiempo real.</p>
+      </div>
+
+      <!-- Filtros -->
+      <div class="filters">
+        <div class="filter">
+          <label>Área</label>
+          <select id="filterArea">
+            <option value="">Todas</option>
+            <option>Producción</option>
+            <option>Ventas</option>
+            <option>Administración</option>
+            <option>Logística</option>
+            <option>TI</option>
+            <option>Otro</option>
+          </select>
+        </div>
+        <div class="filter">
+          <label>Desde</label>
+          <input type="date" id="filterFrom">
+        </div>
+        <div class="filter">
+          <label>Hasta</label>
+          <input type="date" id="filterTo">
+        </div>
+        <button class="btn-ghost small" id="btnClearFilters">Limpiar filtros</button>
+      </div>
+
+      <!-- KPIs -->
+      <div class="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-icon" style="--c:#7c5cff">📥</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Registros</div>
+            <div class="kpi-value" id="kpiRegistros">0</div>
+            <div class="kpi-trend" id="kpiRegistrosTrend">—</div>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-icon" style="--c:#00d4ff">✅</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Tasa de cumplimiento</div>
+            <div class="kpi-value" id="kpiTasa">0%</div>
+            <div class="kpi-trend" id="kpiTasaTrend">—</div>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-icon" style="--c:#00e6a8">⏱️</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Horas efectivas (prom.)</div>
+            <div class="kpi-value" id="kpiHoras">0.0h</div>
+            <div class="kpi-trend" id="kpiHorasTrend">—</div>
+          </div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-icon" style="--c:#ff4d94">⭐</div>
+          <div class="kpi-body">
+            <div class="kpi-label">Cumplimiento (1–5)</div>
+            <div class="kpi-value" id="kpiScore">0.0</div>
+            <div class="kpi-trend" id="kpiScoreTrend">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Gráficos -->
+      <div class="charts">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Productividad por día</h3>
+            <span class="chart-sub">Cumplimiento promedio (1–5)</span>
+          </div>
+          <canvas id="chartLine" height="220"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Registros por área</h3>
+            <span class="chart-sub">Distribución</span>
+          </div>
+          <canvas id="chartDonut" height="220"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3>Calificación del día</h3>
+            <span class="chart-sub">Excelente / Buena / Regular / Baja</span>
+          </div>
+          <canvas id="chartBars" height="220"></canvas>
+        </div>
+      </div>
+
+      <!-- Tabla -->
+      <div class="table-card">
+        <div class="chart-header">
+          <h3>Registros recientes</h3>
+          <span class="chart-sub" id="tableCount">0 registros</span>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Fecha</th>
+                <th>Nombre</th>
+                <th>Área</th>
+                <th>Turno</th>
+                <th>Tareas</th>
+                <th>Horas</th>
+                <th>Cumpl.</th>
+                <th>Calif.</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span class="icon">✓</span>
+    <span>¡Respuestas registradas con éxito!</span>
+  </div>
+<script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

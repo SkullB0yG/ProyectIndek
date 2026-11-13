@@ -1,0 +1,5 @@
+.env
+.vscode
+__pycavche__/
+*.py[cod]
+*$py.class
