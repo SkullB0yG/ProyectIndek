@@ -29,4 +29,5 @@ def get_users ():
         print(f"Error: {e}")
     finally:
         session.close()
+    
 
