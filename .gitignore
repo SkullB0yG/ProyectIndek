@@ -3,4 +3,4 @@
 __pycavche__/
 *.py[cod]
 *$py.class
-sql
+database.db
