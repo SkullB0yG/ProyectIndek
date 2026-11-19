@@ -8,7 +8,7 @@ CREATE TABLE tipos_ususarios(
 );
 
 
-CREATE TABLE ususarios(
+CREATE TABLE usuarios(
 	id INTEGER PRIMARY KEY AUTOINCREMENT,
 	nombre TEXT NOT NULL,
 	contrasena TEXT NOT NULL,

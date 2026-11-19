@@ -1,5 +1,5 @@
 from flask import Flask, render_template, redirect, url_for, request
-from lib.orm import get_path, get_users
+from lib.usuarios import ValidataionLogin
 
 
 app = Flask(__name__)
@@ -28,7 +28,7 @@ def login():
         passw = request.form.get('password')
 
         # Este punto de validacaion peramite realizar un control de acceso para el login 
-        validator = get_users(credentcials=[name, passw])
+        validator = ValidataionLogin(credentcials=[name, passw])
         try:
             if validator[0][0] == 1 and validator[0][1] == True:   
 

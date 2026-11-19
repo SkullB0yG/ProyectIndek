@@ -4,3 +4,4 @@ __pycavche__/
 *.py[cod]
 *$py.class
 database.db
+testing.py
